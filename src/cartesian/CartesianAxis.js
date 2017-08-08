@@ -139,10 +139,11 @@ class CartesianAxis extends Component {
     }
 
     const count = preserveEnd ? len - 1 : len;
+    const resultForSize = result.slice(0, count);
+    const size = CartesianAxis.getMaxTickSize({ result: resultForSize, tickFormatter, sizeKey });
+
     for (let i = 0; i < count; i++) {
       let entry = result[i];
-      const content = _.isFunction(tickFormatter) ? tickFormatter(entry.value) : entry.value;
-      const size = getStringSize(content)[sizeKey];
 
       if (i === 0) {
         const gap = sign * (entry.coordinate - sign * size / 2 - start);
@@ -166,6 +167,14 @@ class CartesianAxis extends Component {
     return result.filter(entry => entry.isShow);
   }
 
+  static getMaxTickSize({ result, tickFormatter, sizeKey }) {
+    return result.reduce((maxSize, entry) => {
+      const content = _.isFunction(tickFormatter) ? tickFormatter(entry.value) : entry.value;
+      const tickSize = getStringSize(content)[sizeKey];
+      return Math.max(maxSize, tickSize);
+    }, 0);
+  }
+
   static getTicksEnd({ ticks, tickFormatter, viewBox, orientation, minTickGap }) {
     const { x, y, width, height } = viewBox;
     const sizeKey = (orientation === 'top' || orientation === 'bottom') ? 'width' : 'height';
@@ -183,10 +192,11 @@ class CartesianAxis extends Component {
       end = sizeKey === 'width' ? x : y;
     }
 
+    const resultForSize = result.slice(0, len - 1);
+    const size = CartesianAxis.getMaxTickSize({ result: resultForSize, tickFormatter, sizeKey });
+
     for (let i = len - 1; i >= 0; i--) {
       let entry = result[i];
-      const content = _.isFunction(tickFormatter) ? tickFormatter(entry.value) : entry.value;
-      const size = getStringSize(content)[sizeKey];
 
       if (i === len - 1) {
         const gap = sign * (entry.coordinate + sign * size / 2 - end);
