@@ -1,3 +1,7 @@
+> ⚠️ **DEPRECATED** — this fork is no longer maintained and will be archived.
+> It has no remaining consumers at Glia (see BROW-2631). Use the upstream
+> package [`recharts`](https://www.npmjs.com/package/recharts) ([recharts/recharts](https://github.com/recharts/recharts)) instead.
+
 # Recharts
 
 [![Rocket.Chat](https://demo.rocket.chat/images/join-chat.svg)](https://demo.rocket.chat/channel/recharts)
